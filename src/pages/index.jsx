@@ -1,25 +1,42 @@
-const Home = ({ data }) => {
+import React from "react";
+import { connect } from "react-redux";
+
+const Home = (props) => {
+  const { productsList, isLoading } = props;
+
+  if (isLoading && productsList.length === 0) return <div>Loading...</div>;
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
-      {data.map(item => <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <span>{item.product}</span>
-          <span>{item.quantity}</span>
-          <span>{item.price}</span>
-          <span>{item.type}</span>
-          <span>{item.industry}</span>
-          <span>{item.origin}</span>
-        </div>)}
+    <div>
+      <button onClick={() => props.getProducts()}>Load Products</button>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {productsList?.map((item, index) => (
+          <div
+            style={{ display: "flex", justifyContent: "space-between" }}
+            key={`${index}-${item.origin}-${item.product}`}
+          >
+            <span>{item.product}</span>
+            <span>{item.quantity}</span>
+            <span>{item.price}</span>
+            <span>{item.type}</span>
+            <span>{item.industry}</span>
+            <span>{item.origin}</span>
+          </div>
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export async function getServerSideProps() {
-  const res = await fetch('http://localhost:3000/api/getData');
-  const dataSource = await res.json();
-  const data = dataSource.slice(0, 1000);
+const mapState = (state) => ({
+  productsList: state.products.list,
+  isLoading: state.products.isLoading,
+});
 
-  return { props: { data } }
-}
+const mapDispatch = ({ products: { getProducts } }) => ({
+  getProducts: () => getProducts(),
+});
 
-export default Home;
+const HomeContainer = connect(mapState, mapDispatch)(Home);
+
+export default HomeContainer;
