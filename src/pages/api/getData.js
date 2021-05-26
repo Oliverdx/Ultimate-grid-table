@@ -6,5 +6,5 @@ const db = low(adapter);
 export default (req, res) => {
   const data = db.get("data");
 
-  res.status(200).json(data.slice(0, 100));
+  res.status(200).json(data);
 };
