@@ -1,8 +1,16 @@
-.virtualTable_cell {
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  border: 1px solid var(--lightgray);
-  border-bottom: none;
-  border-right: none;
+.virtualTable {
+  min-width: 640px;
+  max-width: 1400px;
+
+  &__cell {
+    display: block;
+    padding: 0 10px;
+    border: 1px solid var(--lightgray);
+    border-bottom: none;
+    border-right: none;
+    overflow: hidden;
+    white-space: pre;
+    text-overflow: ellipsis;
+    line-height: 40px;
+  }
 }
