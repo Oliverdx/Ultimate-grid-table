@@ -3,11 +3,13 @@ import { VariableSizeGrid as Grid } from "react-window";
 import ResizeObserver from "rc-resize-observer";
 import { Table } from "antd";
 
+import styles from "./style.module.scss";
+
 function VirtualTable(props) {
   const { columns, scroll } = props;
   const [tableWidth, setTableWidth] = useState(0);
 
-  const widthColumnCount = columns.filter(({ width }) => !width).length;
+  const widthColumnCount = columns.length;
   const mergedColumns = columns.map((column) => {
     if (column.width) {
       return column;
@@ -43,7 +45,7 @@ function VirtualTable(props) {
 
   useEffect(() => resetVirtualGrid, [tableWidth]);
 
-  const renderVirtualList = (rawData, { scrollbarSize, ref, onScroll }) => {
+  const renderVirtualList = (rawData, { scrollbarSize, ref }) => {
     ref.current = connectObject;
     const totalHeight = rawData.length * 54;
 
@@ -51,31 +53,17 @@ function VirtualTable(props) {
       <Grid
         ref={gridRef}
         columnCount={mergedColumns.length}
-        columnWidth={(index) => {
-          const { width } = mergedColumns[index];
-          return totalHeight > scroll && index === mergedColumns.length - 1
-            ? width - scrollbarSize - 1
-            : width;
-        }}
+        columnWidth={(index) => mergedColumns[index].width}
         height={scroll.y}
         rowCount={rawData.length}
-        rowHeight={() => 54}
+        rowHeight={() => 40}
         width={tableWidth}
-        onScroll={({ scrollLeft }) => {
-          onScroll({ scrollLeft });
-        }}
         wrap={true}
         justify="center"
         align="middle"
       >
         {({ columnIndex, rowIndex, style }) => (
-          <div
-            // className={classNames("virtual-table-cell", {
-            //   "virtual-table-cell-last":
-            //     columnIndex === mergedColumns.length - 1,
-            // })}
-            style={style}
-          >
+          <div className={styles.virtualTable__cell} style={style}>
             {rawData[rowIndex][mergedColumns[columnIndex].dataIndex]}
           </div>
         )}
@@ -91,7 +79,7 @@ function VirtualTable(props) {
     >
       <Table
         {...props}
-        className="virtual-table"
+        className={styles.virtualTable}
         columns={mergedColumns}
         pagination={false}
         components={{

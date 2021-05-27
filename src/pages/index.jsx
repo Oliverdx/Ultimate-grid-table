@@ -4,6 +4,8 @@ import { Input } from "antd";
 
 import VirtualTable from "components/virtualTable";
 import { columns } from "@/utils/tableColumns";
+import useDebounce from "@/hooks/useDebounce";
+
 import styles from "@/styles/home.module.scss";
 
 const { Search } = Input;
@@ -11,6 +13,7 @@ const { Search } = Input;
 const Home = (props) => {
   const { productsList, isLoading } = props;
   const [list, setList] = useState([]);
+  const [inputing, setInputing] = useState({});
   const searchBar = useRef();
 
   useEffect(() => {
@@ -35,30 +38,28 @@ const Home = (props) => {
     }
   };
 
+  useDebounce(() => searchItens(inputing?.target?.value), 300, inputing);
+
   return (
     <div className={styles.homepageWrapper}>
       <div className={styles.homepageWrapper__header}>
+        <h1>Ultimate Grid Data</h1>
         <Search
           ref={searchBar}
           placeholder="Search by product or origin"
           enterButton="Search"
           size="large"
           onSearch={searchItens}
-          onPressEnter={searchItens}
+          onPressEnter={(e) => searchItens(e.target.value)}
           className={styles.searchbar}
           allowClear={true}
+          onChange={setInputing}
         />
-        <button
-          className={styles.homepageWrapper__headerReload}
-          onClick={() => props.getProducts()}
-        >
-          Reload Products
-        </button>
       </div>
       <VirtualTable
         columns={columns}
         dataSource={list}
-        scroll={{ y: 400, x: "100vw" }}
+        scroll={{ y: 400 }}
         loading={isLoading}
       />
     </div>
