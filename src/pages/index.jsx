@@ -1,29 +1,36 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Input } from "antd";
+
+import VirtualTable from "components/virtualTable";
+import { columns } from "@/utils/tableColumns";
+import styles from "@/styles/home.module.scss";
+
+const { Search } = Input;
 
 const Home = (props) => {
   const { productsList, isLoading } = props;
 
-  if (isLoading && productsList.length === 0) return <div>Loading...</div>;
+  const onSearch = (value) => console.log(value);
 
   return (
-    <div>
-      <button onClick={() => props.getProducts()}>Load Products</button>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        {productsList?.map((item, index) => (
-          <div
-            style={{ display: "flex", justifyContent: "space-between" }}
-            key={`${index}-${item.origin}-${item.product}`}
-          >
-            <span>{item.product}</span>
-            <span>{item.quantity}</span>
-            <span>{item.price}</span>
-            <span>{item.type}</span>
-            <span>{item.industry}</span>
-            <span>{item.origin}</span>
-          </div>
-        ))}
-      </div>
+    <div className={styles.homepageWrapper}>
+      {productsList && (
+        <button onClick={() => props.getProducts()}>Load Products</button>
+      )}
+      <Search
+        placeholder="Search by product or origin"
+        enterButton="Search"
+        size="large"
+        onSearch={onSearch}
+        className={styles.searchbar}
+      />
+      <VirtualTable
+        columns={columns}
+        dataSource={productsList}
+        scroll={{ y: 400, x: "100vw" }}
+        loading={isLoading}
+      />
     </div>
   );
 };

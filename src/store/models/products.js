@@ -32,12 +32,12 @@ export const products = {
       const quantity = rootState.products.listQtd;
       try {
         this.GET_PRODUCTS();
-        const res = await fetch(`http://localhost:3000/api/getData`);
+        const res = await fetch(`/api/getData`);
         const data = await res.json();
         this.SET_PRODUCTS(data);
       } catch (error) {
         console.log(error);
-        this.IS_LOADING(false);
+        this.LOADING(false);
       }
     },
   }),
