@@ -11,7 +11,6 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
-  "proxy": "http://localhost:3000",
   "dependencies": {
     "@rematch/core": "^2.0.1",
     "@types/jest": "^26.0.23",
