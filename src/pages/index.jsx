@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { Input } from "antd";
 
@@ -10,24 +10,54 @@ const { Search } = Input;
 
 const Home = (props) => {
   const { productsList, isLoading } = props;
+  const [list, setList] = useState([]);
+  const searchBar = useRef();
 
-  const onSearch = (value) => console.log(value);
+  useEffect(() => {
+    setList(productsList);
+  }, [productsList]);
+
+  useEffect(() => {
+    props.getProducts();
+  }, []);
+
+  const compareTerms = (compare, term) =>
+    compare.toLowerCase().includes(term.toLowerCase());
+
+  const searchItens = (value) => {
+    if (!value) setList(productsList);
+    else {
+      const newList = productsList.filter(
+        (elem) =>
+          compareTerms(elem.product, value) || compareTerms(elem.origin, value)
+      );
+      setList(newList);
+    }
+  };
 
   return (
     <div className={styles.homepageWrapper}>
-      {productsList && (
-        <button onClick={() => props.getProducts()}>Load Products</button>
-      )}
-      <Search
-        placeholder="Search by product or origin"
-        enterButton="Search"
-        size="large"
-        onSearch={onSearch}
-        className={styles.searchbar}
-      />
+      <div className={styles.homepageWrapper__header}>
+        <Search
+          ref={searchBar}
+          placeholder="Search by product or origin"
+          enterButton="Search"
+          size="large"
+          onSearch={searchItens}
+          onPressEnter={searchItens}
+          className={styles.searchbar}
+          allowClear={true}
+        />
+        <button
+          className={styles.homepageWrapper__headerReload}
+          onClick={() => props.getProducts()}
+        >
+          Reload Products
+        </button>
+      </div>
       <VirtualTable
         columns={columns}
-        dataSource={productsList}
+        dataSource={list}
         scroll={{ y: 400, x: "100vw" }}
         loading={isLoading}
       />
