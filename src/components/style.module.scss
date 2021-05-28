@@ -1,0 +1,15 @@
+.virtualTable {
+  min-width: 640px;
+
+  &__cell {
+    display: block;
+    padding: 0 10px;
+    border: 1px solid var(--lightgray);
+    border-bottom: none;
+    border-right: none;
+    overflow: hidden;
+    white-space: pre;
+    text-overflow: ellipsis;
+    line-height: 40px;
+  }
+}

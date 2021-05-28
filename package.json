@@ -3,14 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "start http://localhost:3000 && next dev",
     "build": "next build",
-    "start": "next build && next start",
+    "start": "next start",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
-  "proxy": "http://localhost:3000",
   "dependencies": {
     "@rematch/core": "^2.0.1",
     "@types/jest": "^26.0.23",
@@ -30,7 +29,9 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "^7.2.4",
+    "react-scripts": "^4.0.3",
     "react-test-renderer": "^17.0.2",
+    "react-window": "^1.8.6",
     "sass": "^1.32.12"
   },
   "devDependencies": {
