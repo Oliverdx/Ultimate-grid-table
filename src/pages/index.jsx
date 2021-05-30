@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { Input } from "antd";
 
-import VirtualTable from "components/virtualTable";
+import VirtualTable from "components/virtualTable/virtualTable";
 import { columns } from "@/utils/tableColumns";
 import useDebounce from "@/hooks/useDebounce";
 
