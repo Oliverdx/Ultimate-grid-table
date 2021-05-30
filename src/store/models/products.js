@@ -27,9 +27,8 @@ export const products = {
       };
     },
   },
-  effects: (dispatch) => ({
-    async getProducts(payload, rootState) {
-      const quantity = rootState.products.listQtd;
+  effects: () => ({
+    async getProducts() {
       try {
         this.GET_PRODUCTS();
         const res = await fetch(`/api/getData`);
